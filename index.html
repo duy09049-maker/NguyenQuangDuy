@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Lý Quán Cà Phê Duyy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+    }
+    header {
+      background: #6f4e37;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      background: #8b5e3c;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+    }
+    .menu, .cart, .dashboard {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      flex: 1;
+    }
+    h2 {
+      margin-top: 0;
+      color: #6f4e37;
+    }
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+    .item button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      background: #6f4e37;
+      color: white;
+      cursor: pointer;
+    }
+    .item button:hover {
+      background: #4b2e1e;
+    }
+    #cart-items {
+      list-style: none;
+      padding: 0;
+    }
+    #cart-items li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px dashed #ccc;
+    }
+    #cart-items button {
+      background: red;
+      padding: 4px 8px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+    #cart-items button:hover {
+      background: darkred;
+    }
+    footer {
+      background: #6f4e37;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 8px;
+      text-align: center;
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      display: none;
+      z-index: 1000;
+    }
+    .notification.error {
+      background: red;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>☕ Quản Lý Quán Cà Phê Duyy</h1>
+    <p>Hệ thống quản lý menu - giỏ hàng - doanh thu</p>
+  </header>
+
+  <nav>
+    <a onclick="showPage('menuPage')">Menu</a>
+    <a onclick="showPage('cartPage')">Giỏ Hàng</a>
+    <a onclick="showPage('dashboardPage')">Quản Lý</a>
+  </nav>
+
+  <div class="notification" id="notification"></div>
+
+  <div id="menuPage" class="container">
+    <div class="menu">
+      <h2>Menu Đồ Uống & Bánh Ngọt</h2>
+      <div class="item"><span>☕ Cà Phê Đen</span><span>25.000đ</span><button onclick="addToCart('Cà Phê Đen', 25000)">Thêm</button></div>
+      <div class="item"><span>🥛 Cà Phê Sữa</span><span>30.000đ</span><button onclick="addToCart('Cà Phê Sữa', 30000)">Thêm</button></div>
+      <div class="item"><span>🥤 Bạc Xỉu</span><span>35.000đ</span><button onclick="addToCart('Bạc Xỉu', 35000)">Thêm</button></div>
+      <div class="item"><span>🍑 Trà Đào Cam Sả</span><span>40.000đ</span><button onclick="addToCart('Trà Đào Cam Sả', 40000)">Thêm</button></div>
+      <div class="item"><span>🍵 Trà Sữa Matcha</span><span>45.000đ</span><button onclick="addToCart('Trà Sữa Matcha', 45000)">Thêm</button></div>
+      <div class="item"><span>🥑 Sinh Tố Bơ</span><span>50.000đ</span><button onclick="addToCart('Sinh Tố Bơ', 50000)">Thêm</button></div>
+      <div class="item"><span>🥭 Sinh Tố Xoài</span><span>45.000đ</span><button onclick="addToCart('Sinh Tố Xoài', 45000)">Thêm</button></div>
+      <div class="item"><span>🍰 Bánh Tiramisu</span><span>55.000đ</span><button onclick="addToCart('Bánh Tiramisu', 55000)">Thêm</button></div>
+      <div class="item"><span>🍓 Bánh Mousse Dâu</span><span>60.000đ</span><button onclick="addToCart('Bánh Mousse Dâu', 60000)">Thêm</button></div>
+    </div>
+  </div>
+
+  <div id="cartPage" class="container hidden">
+    <div class="cart">
+      <h2>Giỏ Hàng</h2>
+      <ul id="cart-items"></ul>
+      <h3>Tổng cộng: <span id="total">0</span> đ</h3>
+      <button onclick="checkout()">Thanh Toán</button>
+      <button style="background:#8b5e3c;margin-left:10px" onclick="clearCart()">Xóa Tất Cả</button>
+    </div>
+  </div>
+
+  <div id="dashboardPage" class="container hidden">
+    <div class="dashboard">
+      <h2>📊 Dashboard Quản Lý</h2>
+      <h3>Doanh Thu: <span id="revenue">0</span> đ</h3>
+      <h3>👨‍🍳 Nhân Viên</h3>
+      <table>
+        <tr><th>Tên</th><th>Chức vụ</th></tr>
+        <tr><td>Nguyễn Văn A</td><td>Pha chế</td></tr>
+        <tr><td>Trần Thị B</td><td>Phục vụ</td></tr>
+        <tr><td>Lê Văn C</td><td>Thu ngân</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Quán Cà Phê Duyy | All rights reserved</p>
+  </footer>
+
+  <script>
+    let cart = [];
+    let total = 0;
+    let revenue = 0;
+
+    function showPage(pageId) {
+      document.getElementById("menuPage").classList.add("hidden");
+      document.getElementById("cartPage").classList.add("hidden");
+      document.getElementById("dashboardPage").classList.add("hidden");
+      document.getElementById(pageId).classList.remove("hidden");
+    }
+
+    function showNotification(message, type="success") {
+      let noti = document.getElementById("notification");
+      noti.textContent = message;
+      noti.className = "notification";
+      if(type === "error") noti.classList.add("error");
+      noti.style.display = "block";
+      setTimeout(() => { noti.style.display = "none"; }, 2000);
+    }
+
+    function addToCart(name, price) {
+      cart.push({name, price});
+      total += price;
+      renderCart();
+      showNotification("Đã thêm " + name + " vào giỏ hàng ✅");
+    }
+
+    function removeFromCart(index) {
+      total -= cart[index].price;
+      let removed = cart[index].name;
+      cart.splice(index, 1);
+      renderCart();
+      showNotification("Đã xóa " + removed + " khỏi giỏ hàng ❌", "error");
+    }
+
+    function clearCart() {
+      cart = [];
+      total = 0;
+      renderCart();
+      showNotification("Đã xóa toàn bộ giỏ hàng ❌", "error");
+    }
+
+    function renderCart() {
+      let cartItems = document.getElementById("cart-items");
+      cartItems.innerHTML = "";
+      cart.forEach((item, index) => {
+        let li = document.createElement("li");
+        li.innerHTML = `${item.name} - ${item.price.toLocaleString()}đ 
+          <button onclick="removeFromCart(${index})">Xóa</button>`;
+        cartItems.appendChild(li);
+      });
+      document.getElementById("total").textContent = total.toLocaleString();
+    }
+
+    function checkout() {
+      if(cart.length === 0) {
+        showNotification("Giỏ hàng đang trống ❌", "error");
+      } else {
+        showNotification("Thanh toán thành công! 💰", "success");
+        revenue += total;
+        document.getElementById("revenue").textContent = revenue.toLocaleString();
+        clearCart();
+      }
+    }
+  </script>
+</body>
+</html>
